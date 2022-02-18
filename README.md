@@ -1,9 +1,9 @@
 # CS3113_SP22_LAB01_TEAMMneumonic
 
-#Tenative Plan 
+# Tenative Plan 
 
 
-#Statment of Work 
+# Statment of Work 
 
 
-#Shedule/Timeline 
+# Shedule/Timeline 

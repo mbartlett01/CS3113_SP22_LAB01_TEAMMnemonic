@@ -14,3 +14,7 @@ Sub Problem:
 
 
 ## Schedule/Timeline 
+ Final - Febuary 28th 
+ Record - 26th
+ Programming - 
+ 

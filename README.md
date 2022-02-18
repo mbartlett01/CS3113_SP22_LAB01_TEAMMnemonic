@@ -15,6 +15,10 @@ Sub Problem:
 
 ## Schedule/Timeline 
  Final - Febuary 28th 
+ 
  Record - 26th
- Programming - 
+ 
+ Programming Portion - 24th/25th
+ 
+ 
  

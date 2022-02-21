@@ -7,21 +7,23 @@ Sub Problem: Creation of Node
 
 Sub Problem: Pointing to Next Node 
 
-Sub Problem: 
+Sub Problem: Implement Bubble sort on List
 
 
 ## Statment of Work 
-
+###Written Component
+-All three members will work on the README together to establish a timeline and proide individual reflections
+###Presentation
+###Implementation
 
 ## Schedule/Timeline 
- Final - Febuary 28th 
+-Initial Progress Meeting: February 21st
+-Second Progress Meeting: February 25th
+-Finish Programming section:February 25th
+-Finish Report: February 25th
+-Record Presentation: Febraury 26th
  
- Record - 26th
- 
- Report - 25th
- 
- Programming Portion - 24th/25th
- 
- 
+##Meeting Notes
+-February 18th: Set initial timeline and meeting dates. Planned on working individually and then reporting back on the following Monday 
  
  

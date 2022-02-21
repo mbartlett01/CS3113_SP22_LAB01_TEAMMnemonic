@@ -18,8 +18,8 @@ Sub Problem: Implement Bubble sort on List
 ###Implementation
 
 ## Schedule/Timeline 
--Initial Progress Meeting: February 21st
--Second Progress Meeting: February 25th
+-  Initial Progress Meeting: February 21st
+-  Second Progress Meeting: February 25th
 -Finish Programming section:February 25th
 -Finish Report: February 25th
 -Record Presentation: Febraury 26th

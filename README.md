@@ -13,7 +13,7 @@ Sub Problem: Implement Bubble sort on List
 
 ## Statment of Work 
 ### Written Component
--All three members will work on the README together to establish a timeline and proide individual reflections
+-  All three members will work on the README together to establish a timeline and proide individual reflections
 ### Presentation
 ### Implementation
 

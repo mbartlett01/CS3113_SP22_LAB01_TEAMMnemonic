@@ -18,7 +18,10 @@
 
 	
 .section .data
-# This example does not make use of the data section	
+# This example does not make use of the data section
+# Creation of a temp list to run bubble sort on -> no nodes created 
+data_items
+     .long 13,167,4,200,5,75,10,14,1,60,2,111,66,55,0
 .section .text
 # The .text section is our executable code.
 

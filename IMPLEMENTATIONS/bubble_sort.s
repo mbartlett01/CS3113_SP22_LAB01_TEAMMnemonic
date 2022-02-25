@@ -17,50 +17,9 @@ _start:
 	# Fill in the addresses array
 	call _fill_in_addesses
 
-	# Start bubble sort
-	#%rax first element
-	#%rbx second element
-	#%rcx temporary variable for cmpq
-	#%rdx flag saying if we have swapped (0 = no swap, 1 = swap)
-	_start_outer_loop:
-		#Start index variable at 0
-		movq $0, %rdi
-		movq $0, %rdx
-		_start_inner_loop:
-			#Load the address of the first two values into %rax and %rbx
-			movq addresses(,%rdi,8), %rax
-			incq %rdi
-			movq addresses(,%rdi,8), %rbx
-			#Exit loop if last element is -1
-			cmpq $-1, (%rbx)
-			je _end_inner_loop
-			#Compare the values and swap if necessary
-			#Push the addresses to reduce register use
-			pushq %rax
-			pushq %rbx
-			pushq (%rax)
-			pushq (%rbx)
-			#Get the actual values at the addresses
-			popq %rbx
-			popq %rax
-			#Compare the value of the two elements
-			cmpq %rbx, %rax
-			#Return the addresses to the registers
-			popq %rbx
-			popq %rax
-			#Decide to swap or not
-			jle _no_swap
-			call _swap
-			#Set the swap flag to true
-			movq $1, %rdx
-			_no_swap:
-			jmp _start_inner_loop
-		_end_inner_loop:
-		#Check to see if no swaps occurred
-		cmpq $0, %rdx
-		je _end_outer_loop
-		jmp _start_outer_loop
-	_end_outer_loop:
+	#Sort the linked list
+	leaq addresses, %rcx
+	call _bubble_sort
 
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
@@ -129,6 +88,7 @@ _fill_in_addesses:
 	# return 
 	ret
 
+#Swap Function used in bubble sort that swaps addresses stored in %rax and %rbx
 .type _swap, @function
 _swap:
 	# standard function stuff for call
@@ -154,7 +114,115 @@ _swap:
 
 	# return 
 	ret
-	
+
+#Uses bubble sort to sort a linked list
+#Passes the addresses of linked list in %rcx
+.type _bubble_sort, @function
+_bubble_sort:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	# Start bubble sort
+	#%rax first element
+	#%rbx second element
+	#%rdx flag saying if we have swapped (0 = no swap, 1 = swap)
+	_start_outer__bubble_loop:
+		#Start index variable at 0
+		movq $0, %rdi
+		movq $0, %rdx
+		_start_inner_bubble_loop:
+			#Load the address of the first two values into %rax and %rbx
+			movq (%rcx,%rdi,8), %rax
+			incq %rdi
+			movq (%rcx,%rdi,8), %rbx
+			#Exit loop if last element is -1
+			cmpq $-1, (%rbx)
+			je _end_inner_loop
+			#Compare the values and swap if necessary
+			#Push the addresses to reduce register use
+			pushq %rax
+			pushq %rbx
+			pushq (%rax)
+			pushq (%rbx)
+			#Get the actual values at the addresses
+			popq %rbx
+			popq %rax
+			#Compare the value of the two elements
+			cmpq %rbx, %rax
+			#Return the addresses to the registers
+			popq %rbx
+			popq %rax
+			#Decide to swap or not
+			jle _no_swap
+			call _swap
+			#Set the swap flag to true
+			movq $1, %rdx
+			_no_swap:
+			jmp _start_inner_bubble_loop
+		_end_inner_bubble_loop:
+		#Check to see if no swaps occurred
+		cmpq $0, %rdx
+		je _end_outer_bubble_loop
+		jmp _start_outer_bubble_loop
+	_end_outer_bubble_loop:
+
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+	# return 
+	ret
+
+#Uses Insertion sort to sort a linked list
+#Passes the addresses of linked list in %rcx
+.type _insertion_sort, @function
+_insertion_sort:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	#%rdi outer loop index
+	#%rsi inner loop index
+	#Start insertion sort
+	#Initialize the index variables
+	movq $1, %rdi
+	movq $0, %rsi
+	_start_outer_insertion_loop:
+		#Load the value we are currently moving into %rax
+		movq (%rcx,%rdi,8), %rax
+		#Break out of the loop if the value is -1
+		cmpq $-1, %rax
+		je _end_outer_insertion_loop
+		#Start inner loop
+		_start_inner_insertion_loop:
+			#check against each 
+		_end_inner_insertion_loop:
+		#Jump back to the start of the outer loop
+		jmp _start_outer_insertion_loop
+	_end_outer_insertion_loop:
+
+		
+
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+
 _exit_x86_64bit:
 	# This is slightly different because in x86_64 (64bit) we get the
 	# syscall instruction, which provides more flexibility than int (interrupt)

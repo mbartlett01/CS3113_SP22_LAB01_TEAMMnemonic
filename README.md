@@ -3,9 +3,10 @@
 ## Tenative Plan 
 -  Main Problem: Creation of a Linked List using Bubble Sort in Assembly 
 -  Sub Problem: Creation of Node
+   - Created
 -  Sub Problem: Pointing to Next Node
    -  Using a back-to-back method to address this issue
-      - Changed 
+      - Changed to a parallel list formate to address the issue instead
 -  Sub Problem: Implement Bubble sort on List
 
 

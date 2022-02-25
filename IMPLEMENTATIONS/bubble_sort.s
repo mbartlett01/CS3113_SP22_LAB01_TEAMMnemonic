@@ -2,10 +2,10 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-     .quad 13,167,200,4,-1
+     .quad 13,167,200,4,12,300,1000,7,1,-1
 #Initialize the addresses to zero
 addresses:
-     .quad 0,0,0,0,0
+     .quad 0,0,0,0,0,0,0,0,0,0
 .section .text
 # The .text section is our executable code.
 
@@ -35,8 +35,20 @@ _start:
 			cmpq $-1, (%rbx)
 			je _end_inner_loop
 			#Compare the values and swap if necessary
-			movq (%rbx), %rcx
-			cmpq %rcx, (%rax)
+			#Push the addresses to reduce register use
+			pushq %rax
+			pushq %rbx
+			pushq (%rax)
+			pushq (%rbx)
+			#Get the actual values at the addresses
+			popq %rbx
+			popq %rax
+			#Compare the value of the two elements
+			cmpq %rbx, %rax
+			#Return the addresses to the registers
+			popq %rbx
+			popq %rax
+			#Decide to swap or not
 			jle _no_swap
 			call _swap
 			#Set the swap flag to true

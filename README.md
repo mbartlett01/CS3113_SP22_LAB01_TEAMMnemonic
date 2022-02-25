@@ -5,6 +5,7 @@
 -  Sub Problem: Creation of Node
 -  Sub Problem: Pointing to Next Node
    -  Using a back-to-back method to address this issue
+      -Changed 
 -  Sub Problem: Implement Bubble sort on List
 
 
@@ -26,7 +27,8 @@
 ## Meeting Notes
 -  February 18th: Set initial timeline and meeting dates. Planned on working individually and then reporting back on the following Monday 
 -  February 19th: Set up outline for the report,and started filling out the assumptions section. Pooled together knowledge of the work done on the weekend.
--  February 245h: Finsihed basic bubble sort program. Set up next meeting for addition spefication for additional points. Moved the dates back for the presentation and report. 
+-  February 24th: Finished basic bubble sort program. Set up next meeting for addition spefication for additional points. Moved the dates back for the presentation and report.
+-  February 25th:  
  
  ## Self-Assessment 
  

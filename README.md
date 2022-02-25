@@ -19,7 +19,9 @@
 -  Second Progress Meeting: February 25th
 -  Finish Programming section:February 25th
 -  Finish Report: February 25th
+   - New Date: February 26th 
 -  Record Presentation: Febraury 26th
+   - New Date: February 27th 
  
 ## Meeting Notes
 -  February 18th: Set initial timeline and meeting dates. Planned on working individually and then reporting back on the following Monday 
@@ -29,3 +31,4 @@
  
  ## Reflections
  
+   

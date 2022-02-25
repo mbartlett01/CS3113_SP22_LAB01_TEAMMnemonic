@@ -2,7 +2,7 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-     .quad 13,167,200,4,12,300,1000,7,1,-1
+     .quad 13,167,5,1,200,4,-1
 #Initialize the addresses to zero
 addresses:
      .quad 0,0,0,0,0,0,0,0,0,0
@@ -19,7 +19,7 @@ _start:
 
 	#Sort the linked list
 	leaq addresses, %rcx
-	call _bubble_sort
+	call _insertion_sort
 
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
@@ -130,7 +130,7 @@ _bubble_sort:
 	#%rax first element
 	#%rbx second element
 	#%rdx flag saying if we have swapped (0 = no swap, 1 = swap)
-	_start_outer__bubble_loop:
+	_start_outer_bubble_loop:
 		#Start index variable at 0
 		movq $0, %rdi
 		movq $0, %rdx
@@ -141,7 +141,7 @@ _bubble_sort:
 			movq (%rcx,%rdi,8), %rbx
 			#Exit loop if last element is -1
 			cmpq $-1, (%rbx)
-			je _end_inner_loop
+			je _end_inner_bubble_loop
 			#Compare the values and swap if necessary
 			#Push the addresses to reduce register use
 			pushq %rax
@@ -197,22 +197,51 @@ _insertion_sort:
 	#Start insertion sort
 	#Initialize the index variables
 	movq $1, %rdi
-	movq $0, %rsi
 	_start_outer_insertion_loop:
 		#Load the value we are currently moving into %rax
 		movq (%rcx,%rdi,8), %rax
 		#Break out of the loop if the value is -1
-		cmpq $-1, %rax
+		cmpq $-1, (%rax)
 		je _end_outer_insertion_loop
+		#Reset the inner loop index
+		movq %rdi, %rsi
+		decq %rsi
 		#Start inner loop
 		_start_inner_insertion_loop:
-			#check against each 
+			#Load the next value to compare into %rbx
+			movq (%rcx,%rsi,8), %rbx
+			#Compare the values and shift if necessary
+			#Push the addresses to reduce register use
+			pushq %rax
+			pushq %rbx
+			pushq (%rax)
+			pushq (%rbx)
+			#Get the actual values at the addresses
+			popq %rbx
+			popq %rax
+			#Compare the value of the two elements
+			cmpq %rbx, %rax
+			#Return the addresses to the registers
+			popq %rbx
+			popq %rax
+			#Determine if wee need to shift or not
+			jge _no_shift
+			#shift the value in %rbx to the right by one
+			incq %rsi
+			movq %rbx, (%rcx,%rsi,8)
+			decq %rsi
+			_no_shift:
+			#Check to see if we need to break out of the loop
+			decq %rsi
+			cmpq $-1, %rsi
+			je _end_inner_insertion_loop
+			#Jump back to start of the inner loop
+			jmp _start_inner_insertion_loop
 		_end_inner_insertion_loop:
 		#Jump back to the start of the outer loop
+		incq %rdi
 		jmp _start_outer_insertion_loop
 	_end_outer_insertion_loop:
-
-		
 
 	# Standard function callee stuff
 	# 1. set the stack pointer to the base pointer value.
@@ -222,6 +251,8 @@ _insertion_sort:
 	# 2. restore the base pointer
 	popq %rbp
 
+	# return 
+	ret
 
 _exit_x86_64bit:
 	# This is slightly different because in x86_64 (64bit) we get the

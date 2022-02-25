@@ -5,7 +5,7 @@
 -  Sub Problem: Creation of Node
 -  Sub Problem: Pointing to Next Node
    -  Using a back-to-back method to address this issue
-      -Changed 
+      - Changed 
 -  Sub Problem: Implement Bubble sort on List
 
 

@@ -26,6 +26,7 @@
 ## Meeting Notes
 -  February 18th: Set initial timeline and meeting dates. Planned on working individually and then reporting back on the following Monday 
 -  February 19th: Set up outline for the report,and started filling out the assumptions section. Pooled together knowledge of the work done on the weekend.
+-  February 245h: Finsihed basic bubble sort program. Set up next meeting for addition spefication for additional points. Moved the dates back for the presentation and report. 
  
  ## Self-Assessment 
  

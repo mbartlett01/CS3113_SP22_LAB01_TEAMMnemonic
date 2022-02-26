@@ -6,6 +6,8 @@ data_items:
 #Initialize the addresses to zero
 addresses:
      .quad 0,0,0,0,0,0,0,0,0,0
+ addresses_backwards: 
+     .quad 0,0,0,0,0,0,0,0,0,0
 .section .text
 # The .text section is our executable code.
 

@@ -2,10 +2,13 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-     .quad 6,5,4,3,2,1,-1
+	.quad 6,5,4,3,2,1,-1
 #Initialize the addresses to zero
-addresses:
-     .quad 0,0,0,0,0,0,0,0,0,0
+next_address:
+	.quad 0,0,0,0,0,0,0,0,0,0
+previous_address:
+	.quad -1,0,0,0,0,0,0,0,0,0
+
 .section .text
 # The .text section is our executable code.
 
@@ -13,20 +16,23 @@ addresses:
 # with .globl	
 .globl _start
 _start:
-
 	# Fill in the addresses array
+	leaq data_items, %rcx
+	leaq next_address, %rdx
 	call _fill_in_addesses
 
+	_break_point:
+
 	#Sort the linked list
-	leaq addresses, %rcx
-	call _insertion_sort
+	leaq next_address, %rcx
+	call _bubble_sort
 
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
 	movq $0, %rdi
 	_test_loop:
 		#Move each element into %rax
-		movq addresses(,%rdi,8), %rax
+		movq (%rcx,%rdi,8), %rax
 		movq (%rax), %rbx
 		#Exit loop if last element is -1
 		cmpq $-1, %rbx
@@ -38,11 +44,56 @@ _start:
 
 	jmp _exit_x86_64bit
 
-
-# take two params (a,b) in %rdi and %rsi, multiply
-# them and return the result in rax
+#fill in the next address array
+#pass the data array in %rcx and the address array in %rdx
 .type _fill_in_addresses, @function
 _fill_in_addesses:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	#Initialize the index variable
+	movq $1, %rdi
+
+	#Create a loop
+	_start_address_loop:
+		#Load the current value into rax
+		movq (%rcx,%rdi,8), %rax
+		#Load the corresponding address into the addresses array
+		leaq (%rcx,%rdi,8), %rbx
+		decq %rdi
+		movq %rbx, (%rdx,%rdi,8)
+		incq %rdi
+		#Increment the counter
+		incq %rdi
+		#Check to see if the current value is -1 and if so, jump to the end of the loop
+		cmpq $-1, %rax
+		je _end_address_loop
+		#Loop 
+		jmp _start_address_loop
+	_end_address_loop:
+	
+	# callee saved registers: if we used any of the callee saved
+	#   we need to make sure to restore them before returning.
+	
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+	# return 
+	ret
+
+#fill in the previous address array
+#pass the data array in %rcx and the address array in %rdx
+.type _fill_in_previous_addresses, @function
+_fill_in_previous_addresses:
 	# standard function stuff for call
 	# 1. put the old base pointer register on the stack
 	pushq	%rbp
@@ -54,25 +105,19 @@ _fill_in_addesses:
 	movq $0x0, %rdi
 
 	#Create a loop
-	_start_loop:
+	_start_prev_address_loop:
 		#Load the current value into rax
-		movq data_items(,%rdi,8), %rax
-
+		movq (%rcx,%rdi,8), %rax
 		#Load the corresponding address into the addresses array
-		leaq data_items(,%rdi,8), %rbx
-		movq %rbx, addresses(,%rdi,8)
-
-		#Increment the counter
+		leaq (%rcx,%rdi,8), %rbx
 		incq %rdi
-
+		movq %rbx, (%rdx,%rdi,8)
 		#Check to see if the current value is -1 and if so, jump to the end of the loop
 		cmpq $-1, %rax
-		je _end_of_loop
-
+		je _end_prev_address_loop
 		#Loop 
-		jmp _start_loop
-
-	_end_of_loop:
+		jmp _start_prev_address_loop
+	_end_prev_address_loop:
 	
 	# callee saved registers: if we used any of the callee saved
 	#   we need to make sure to restore them before returning.
@@ -99,9 +144,9 @@ _swap:
 	movq	%rsp, %rbp
 
 	#swap the addresses in the addresses array
-	movq %rax, addresses(,%rdi,8)
+	movq %rax, (%rcx,%rdi,8)
 	decq %rdi
-	movq %rbx, addresses(,%rdi,8)
+	movq %rbx, (%rcx,%rdi,8)
 	incq %rdi
 
 	# Standard function callee stuff
@@ -183,6 +228,7 @@ _bubble_sort:
 
 #Uses Insertion sort to sort a linked list
 #Passes the addresses of linked list in %rcx
+#Uses %rax, %rbx, %rdi, %rsi
 .type _insertion_sort, @function
 _insertion_sort:
 	# standard function stuff for call

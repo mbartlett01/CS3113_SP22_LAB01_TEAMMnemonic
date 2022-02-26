@@ -2,7 +2,7 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-     .quad 13,167,5,1,200,4,-1
+     .quad 6,5,4,3,2,1,-1
 #Initialize the addresses to zero
 addresses:
      .quad 0,0,0,0,0,0,0,0,0,0
@@ -224,13 +224,13 @@ _insertion_sort:
 			#Return the addresses to the registers
 			popq %rbx
 			popq %rax
-			#Determine if wee need to shift or not
-			jge _no_shift
+			#Determine if we need to shift or insert
+			jge _end_inner_insertion_loop
+			#Shift the value by 1 if you are not inserting it
 			#shift the value in %rbx to the right by one
 			incq %rsi
 			movq %rbx, (%rcx,%rsi,8)
 			decq %rsi
-			_no_shift:
 			#Check to see if we need to break out of the loop
 			decq %rsi
 			cmpq $-1, %rsi
@@ -238,6 +238,9 @@ _insertion_sort:
 			#Jump back to start of the inner loop
 			jmp _start_inner_insertion_loop
 		_end_inner_insertion_loop:
+		#insert the value into the correct position
+		incq %rsi
+		movq %rax, (%rcx,%rsi,8)
 		#Jump back to the start of the outer loop
 		incq %rdi
 		jmp _start_outer_insertion_loop

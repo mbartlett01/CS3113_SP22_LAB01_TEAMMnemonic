@@ -1,23 +1,19 @@
 # CS3113_SP22_LAB01_TEAMMneumonic
 
 ## Tenative Plan 
+### Problems and Solutions
 -  Main Problem: Creation of a Linked List Using Bubble Sort in Assembly 
 -  Sub Problem: Creation of Node
    - Created a quad list/variable holding various numbers
 -  Sub Problem: Pointing to Next Node
    -  Using a back-to-back method to address this issue
    -   Changed to a parallel list formate to address the issue instead
--  Sub Problem: Implement Bubble Sort on List
-   - 
+- Sub Problem: Implement Bubble Sort on List
 - Sub Problem: Creation of Functions for Compartmentalization
- -  
 - Sub Problem: Creation of Doubly Linked List
- - 
 - Sub Problem: Allow for Fixed Sized List to be Read In 
-   -
 - Sub Problem: Implemenet Insertions Sort on List 
-
-
+### Work Plan
 
 
 ## Statment of Work 

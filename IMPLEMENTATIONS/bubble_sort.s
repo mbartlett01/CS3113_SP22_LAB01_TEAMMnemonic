@@ -8,6 +8,8 @@ next_address:
 	.quad 0,0,0,0,0,0,0,0,0,0
 previous_address:
 	.quad -1,0,0,0,0,0,0,0,0,0
+head:
+	.quad 0
 
 .section .text
 # The .text section is our executable code.
@@ -18,13 +20,15 @@ previous_address:
 _start:
 	# Fill in the addresses array
 	leaq data_items, %rcx
+	movq %rcx, (head)
 	leaq next_address, %rdx
-	call _fill_in_addesses
+	call _fill_in_addresses
 
 	_break_point:
 
 	#Sort the linked list
 	leaq next_address, %rcx
+	leaq head, %rdx
 	call _bubble_sort
 
 	#Load all variable into %rab to check if it is sorted
@@ -47,7 +51,7 @@ _start:
 #fill in the next address array
 #pass the data array in %rcx and the address array in %rdx
 .type _fill_in_addresses, @function
-_fill_in_addesses:
+_fill_in_addresses:
 	# standard function stuff for call
 	# 1. put the old base pointer register on the stack
 	pushq	%rbp
@@ -143,11 +147,22 @@ _swap:
 	#    to the base pointer register
 	movq	%rsp, %rbp
 
+	#Check to see if we are dealing with the head of the array
+	cmpq $0, %rdi
+	je _head_swap
+
 	#swap the addresses in the addresses array
 	movq %rax, (%rcx,%rdi,8)
 	decq %rdi
 	movq %rbx, (%rcx,%rdi,8)
 	incq %rdi
+	jmp _end_head_swap
+
+	#Swap the value for the one in the head of the array
+	_head_swap:
+	movq %rax, (%rcx,%rdi,8)
+	movq %rbx, (%rdx)
+	_end_head_swap:
 
 	# Standard function callee stuff
 	# 1. set the stack pointer to the base pointer value.
@@ -161,7 +176,7 @@ _swap:
 	ret
 
 #Uses bubble sort to sort a linked list
-#Passes the addresses of linked list in %rcx
+#Passes the addresses of linked list in %rcx amd the head of the linked list in %rdx
 .type _bubble_sort, @function
 _bubble_sort:
 	# standard function stuff for call
@@ -174,15 +189,15 @@ _bubble_sort:
 	# Start bubble sort
 	#%rax first element
 	#%rbx second element
-	#%rdx flag saying if we have swapped (0 = no swap, 1 = swap)
+	#%rsi flag saying if we have swapped (0 = no swap, 1 = swap)
 	_start_outer_bubble_loop:
 		#Start index variable at 0
 		movq $0, %rdi
-		movq $0, %rdx
+		movq $0, %rsi
+		#load the head of the list into %rax to start
+		movq (%rdx), %rax
 		_start_inner_bubble_loop:
-			#Load the address of the first two values into %rax and %rbx
-			movq (%rcx,%rdi,8), %rax
-			incq %rdi
+			#Load the address of the next value into %rbx
 			movq (%rcx,%rdi,8), %rbx
 			#Exit loop if last element is -1
 			cmpq $-1, (%rbx)
@@ -205,12 +220,15 @@ _bubble_sort:
 			jle _no_swap
 			call _swap
 			#Set the swap flag to true
-			movq $1, %rdx
+			movq $1, %rsi
 			_no_swap:
+			#Shift %rbx into %rax
+			movq %rbx, %rax
+			incq %rdi
 			jmp _start_inner_bubble_loop
 		_end_inner_bubble_loop:
 		#Check to see if no swaps occurred
-		cmpq $0, %rdx
+		cmpq $0, %rsi
 		je _end_outer_bubble_loop
 		jmp _start_outer_bubble_loop
 	_end_outer_bubble_loop:

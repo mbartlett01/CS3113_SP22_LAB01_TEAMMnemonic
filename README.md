@@ -2,7 +2,7 @@
 
 ## Tenative Plan 
 ### Problems and Solutions
--  Main Problem: Creation of a Linked List Using Bubble Sort in Assembly 
+-   Main Problem: Creation of a Linked List Using Bubble Sort in Assembly 
 -  Sub Problem: Creation of Node
    - Created a quad list/variable holding various numbers
 -  Sub Problem: Pointing to Next Node

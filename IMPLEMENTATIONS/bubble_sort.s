@@ -2,7 +2,7 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 6,5,4,3,2,1,-1
+	.quad 3,1,4,6,2,5,-1
 #Initialize the addresses to zero
 next_address:
 	.quad 0,0,0,0,0,0,0,0,0,0
@@ -33,6 +33,8 @@ _start:
 
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
+	movq (head), %rax
+	movq (%rax), %rbx
 	movq $0, %rdi
 	_test_loop:
 		#Move each element into %rax
@@ -222,8 +224,8 @@ _bubble_sort:
 			#Set the swap flag to true
 			movq $1, %rsi
 			_no_swap:
-			#Shift %rbx into %rax
-			movq %rbx, %rax
+			#Load the new values into %rax
+			movq (%rcx,%rdi,8), %rax
 			incq %rdi
 			jmp _start_inner_bubble_loop
 		_end_inner_bubble_loop:

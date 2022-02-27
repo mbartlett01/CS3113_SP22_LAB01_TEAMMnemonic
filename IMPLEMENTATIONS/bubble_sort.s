@@ -2,7 +2,7 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 3,1,4,6,2,5,-1
+	.quad 1,2,3,4,5,6,-1
 #Initialize the addresses to zero
 next_address:
 	.quad 0,0,0,0,0,0,0,0,0,0
@@ -29,7 +29,7 @@ _start:
 	#Sort the linked list
 	leaq next_address, %rcx
 	leaq head, %rdx
-	call _bubble_sort
+	call _insertion_sort
 
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
@@ -178,7 +178,7 @@ _swap:
 	ret
 
 #Uses bubble sort to sort a linked list
-#Passes the addresses of linked list in %rcx amd the head of the linked list in %rdx
+#Passes the addresses of linked list in %rcx and the head of the linked list in %rdx
 .type _bubble_sort, @function
 _bubble_sort:
 	# standard function stuff for call
@@ -262,7 +262,7 @@ _insertion_sort:
 	#%rsi inner loop index
 	#Start insertion sort
 	#Initialize the index variables
-	movq $1, %rdi
+	movq $0, %rdi
 	_start_outer_insertion_loop:
 		#Load the value we are currently moving into %rax
 		movq (%rcx,%rdi,8), %rax
@@ -274,6 +274,9 @@ _insertion_sort:
 		decq %rsi
 		#Start inner loop
 		_start_inner_insertion_loop:
+			#Check to see if we need to break out of the loop
+			cmpq $-1, %rsi
+			je _end_inner_insertion_loop
 			#Load the next value to compare into %rbx
 			movq (%rcx,%rsi,8), %rbx
 			#Compare the values and shift if necessary
@@ -291,22 +294,51 @@ _insertion_sort:
 			popq %rbx
 			popq %rax
 			#Determine if we need to shift or insert
-			jge _end_inner_insertion_loop
+			jge _insert
 			#Shift the value by 1 if you are not inserting it
 			#shift the value in %rbx to the right by one
 			incq %rsi
 			movq %rbx, (%rcx,%rsi,8)
 			decq %rsi
-			#Check to see if we need to break out of the loop
-			decq %rsi
-			cmpq $-1, %rsi
-			je _end_inner_insertion_loop
 			#Jump back to start of the inner loop
+			decq %rsi
 			jmp _start_inner_insertion_loop
 		_end_inner_insertion_loop:
-		#insert the value into the correct position
+		#Do one more iteration with the head
+		#Move the value of the head into %rbx
+		movq (%rdx), %rbx
+		#Compare the values and shift if necessary
+		#Push the addresses to reduce register use
+		pushq %rax
+		pushq %rbx
+		pushq (%rax)
+		pushq (%rbx)
+		#Get the actual values at the addresses
+		popq %rbx
+		popq %rax
+		#Compare the value of the two elements
+		cmpq %rbx, %rax
+		#Return the addresses to the registers
+		popq %rbx
+		popq %rax
+		#Determine if we need to shift or insert
+		jge _insert
+		#Shift the value by 1 if you are not inserting it
+		#shift the value in %rbx to the right by one
 		incq %rsi
+		movq %rbx, (%rcx,%rsi,8)
+		decq %rsi
+		_insert:
+		#check to see if we need to insert into the head
+		cmpq $-1, %rsi
+		je _head_insert
+		#insert the value into the correct position
 		movq %rax, (%rcx,%rsi,8)
+		jmp _end_head_insert
+		#Insert into the head node if needed
+		_head_insert:
+		movq %rax, (%rdx)
+		_end_head_insert:
 		#Jump back to the start of the outer loop
 		incq %rdi
 		jmp _start_outer_insertion_loop

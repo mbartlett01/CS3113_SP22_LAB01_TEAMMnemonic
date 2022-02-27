@@ -15,7 +15,6 @@
 - Sub Problem: Implemenet Insertions Sort on List 
 ### Work Plan
 
-
 ## Statment of Work 
 
 ### Written Component
@@ -31,9 +30,9 @@
 -  Finish Programming section: February 25th
    -Finish Programing section with add-ons: February 26th/27th
 -  Finish Report: February 25th
-   - New Date: February 26th 
--  Record Presentation: Febraury 26th
-   - New Date: February 27th 
+   - New Date: February 26th/27th 
+-  Record Presentation: Febraury 28th/March 1st 
+   - New Date: February 27th/28th  
 ### Chart Format 
  
 ## Meeting Notes

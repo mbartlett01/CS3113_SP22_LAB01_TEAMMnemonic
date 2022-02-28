@@ -2,7 +2,7 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 1,2,3,4,5,6,-1
+	.quad 6,5,4,3,2,1,-1
 #Initialize the addresses to zero
 next_address:
 	.quad 0,0,0,0,0,0,0,0,0,0
@@ -328,11 +328,13 @@ _insertion_sort:
 		incq %rsi
 		movq %rbx, (%rcx,%rsi,8)
 		decq %rsi
+		decq %rsi
 		_insert:
-		#check to see if we need to insert into the head
-		cmpq $-1, %rsi
+		#Check to see if we are inserting into the head
+		cmpq $-2, %rsi
 		je _head_insert
-		#insert the value into the correct position
+		#Increase %rsi by 1 then insert the value of %rax into the list
+		incq %rsi
 		movq %rax, (%rcx,%rsi,8)
 		jmp _end_head_insert
 		#Insert into the head node if needed

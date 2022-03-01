@@ -1,6 +1,5 @@
+![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=CS3113_SP22_LAB01_TEAMMneumonic%20render&fontSize=290)
 
-# CS3113_SP22_LAB01_TEAMMneumonic
-![header](https://capsule-render.vercel.app/api?color=auto)
 ## Tentative Plan 
 ### Problems and Solutions
 -   Main Problem: Creation of a Linked List Using Bubble Sort in Assembly 

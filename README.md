@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=CFECEC&height=300&section=header&text=CS3113_SP22_LAB01_TEAMMneumonic&fontSize=30&animation=fadeIn)
+![header](https://capsule-render.vercel.app/api?type=waving&color=D5D6EA&height=300&section=header&text=CS3113_SP22_LAB01_TEAMMneumonic&fontSize=30&animation=fadeIn)
 
 ## Tentative Plan 
 ### Problems and Solutions

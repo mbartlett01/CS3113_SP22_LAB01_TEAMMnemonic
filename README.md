@@ -22,7 +22,7 @@
 ## Statment of Work 
 
 ### Written Component
--  All three members will work on the README together to establish a timeline and provide individual reflections
+All three members will work on the README together to establish a timeline and provide individual reflections
 
 ### Presentation
 
@@ -54,7 +54,7 @@
 -  February 24th: Finished basic bubble sort program. Set up next meeting for addition specification for additional points. We moved the dates back for the presentation and report.
 -  February 25th: Finished the implementation of the function compartmentalization specification.  
 -  February 26th: Ran into some troubles with the bubble sort program and the implementation of insertion sort when introducing. We found a massive flaw in the design that previously went unnoticed. We started attempting to read and write input files. 
--  February 27th: Hit a brick wall and struggle to figure out how to do fix many of the errors that 
+-  February 27th: Hit a brick wall and struggle to figure out how to do fix many of of th errors and issues created by the flaw in our previous desgin. Continued having issues getting a file read in to act as input. 
  
  ## Self-Assessment 
  

@@ -23,6 +23,7 @@
 
 ### Written Component
 -  All three members will work on the README together to establish a timeline and provide individual reflections
+
 ### Presentation
 
 ### Implementation
@@ -56,6 +57,12 @@
 -  February 27th: Hit a brick wall and struggle to figure out how to do fix many of the errors that 
  
  ## Self-Assessment 
+ 
+ ### Averi's Assessment
+ 
+ ### Michael's Assessment
+ 
+ ### Tina's Assessment
  
  ## Reflections
  

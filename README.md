@@ -1,4 +1,4 @@
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) `#f03c15` 
+![header](https://capsule-render.vercel.app/api?color=auto)
 # CS3113_SP22_LAB01_TEAMMneumonic
 
 ## Tentative Plan 

@@ -2,12 +2,12 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 6,5,4,3,2,1,-1
+	.quad 20,46,851,746552,5412,641,5775,47,31,2654321,1,-1
 
 #Reserve values that will later be filled in
 .section .bss
 	#Buffer used for printing values
-	.comm buff, 20
+	.comm buff, 128
 	#next_address array, 800 bytes allows for up to 100 quad addresses
 	.comm next_address, 800
 	#head is the head of the array, holds 1 quad address
@@ -86,49 +86,6 @@ _fill_in_addresses:
 		#Loop 
 		jmp _start_address_loop
 	_end_address_loop:
-	
-	# callee saved registers: if we used any of the callee saved
-	#   we need to make sure to restore them before returning.
-	
-	# Standard function callee stuff
-	# 1. set the stack pointer to the base pointer value.
-	#    This is where the caller believe the top of the
-	#    stack is located.
-	movq %rbp, %rsp
-	# 2. restore the base pointer
-	popq %rbp
-
-	# return 
-	ret
-
-#fill in the previous address array
-#pass the data array in %rcx and the address array in %rdx
-.type _fill_in_previous_addresses, @function
-_fill_in_previous_addresses:
-	# standard function stuff for call
-	# 1. put the old base pointer register on the stack
-	pushq	%rbp
-	# 2. move the old stack pointer register
-	#    to the base pointer register
-	movq	%rsp, %rbp
-
-	#Initialize the index variable
-	movq $0x0, %rdi
-
-	#Create a loop
-	_start_prev_address_loop:
-		#Load the current value into rax
-		movq (%rcx,%rdi,8), %rax
-		#Load the corresponding address into the addresses array
-		leaq (%rcx,%rdi,8), %rbx
-		incq %rdi
-		movq %rbx, (%rdx,%rdi,8)
-		#Check to see if the current value is -1 and if so, jump to the end of the loop
-		cmpq $-1, %rax
-		je _end_prev_address_loop
-		#Loop 
-		jmp _start_prev_address_loop
-	_end_prev_address_loop:
 	
 	# callee saved registers: if we used any of the callee saved
 	#   we need to make sure to restore them before returning.
@@ -363,7 +320,7 @@ _insertion_sort:
 	ret
 
 .p2align 4
-.globl print_integer            #void print_uint64(uint64_t value)
+.globl print_value
 print_value:
 	#Standard function initialization
 	pushq	%rbp
@@ -386,24 +343,37 @@ print_value:
 		xor    %edx, %edx			#Clear edx
 		div    %rcx                  #  rax = rdx:rax / 10.  rdx = remainder
 
-									 # store digits in MSD-first printing order, working backwards from the end of the string
-		add    $'0', %rdx            # integer to ASCII.  %dl would work, too, since we know this is 0-9
-		mov    %rdx, buff(,%rsi,1)   # *--p = (value%10) + '0';
-		incq %rsi
+		add    $'0', %rdx           # integer to ASCII.
+		incq   %rsi					#Add 1 to the number of digits written
+
+		#Shift the previous values in the buffer down by 1
+		mov %rsi, %rdi
+		_shift_loop:
+			decq %rdi
+			movq buff(,%rdi, 8), %rbx
+			incq %rdi
+			movq %rbx, buff(,%rdi, 8)
+			decq %rdi
+			#Check to see if we need to break out of the loop
+			cmp $0, %rdi
+			je _end_shift_loop
+			jmp _shift_loop
+		_end_shift_loop:
+
+		#Put the new value in the buffer
+		movq %rdx, buff
 
 		test   %rax, %rax
     jnz  .Ltoascii_digit        # } while(value != 0)
-    # If we used a loop-counter to print a fixed number of digits, we would get leading zeros
-    # The do{}while() loop structure means the loop runs at least once, so we get "0\n" for input=0
 
 	#Add in the newline character at the end of the buffer
-	movb    $'\n', buff(,%rsi,1)
+	movq    $'\n', buff(,%rsi,8)
 	incq %rsi
 
     # Then print the whole string with one system call
-    mov   $1, %rax     #write system call
-    mov   $1, %rdi     #use standard output
-    mov   %rsi, %rdx   # length is stored in %rsi 
+    mov $1, %rax     #write system call
+    mov $1, %rdi     #use standard output
+    imul $8, %rsi, %rdx   # length is stored in %rsi 
 	mov $buff, %rsi	   #Message is located at buff
     syscall            # Output the number using a system call
     

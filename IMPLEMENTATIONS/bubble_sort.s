@@ -2,14 +2,16 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 6,5,4,3,2,1,-1
+	.quad 50,51,4,3,2,1,-1
 #Initialize the addresses to zero
 next_address:
 	.quad 0,0,0,0,0,0,0,0,0,0
-previous_address:
-	.quad -1,0,0,0,0,0,0,0,0,0
 head:
 	.quad 0
+
+#Reserve a 20 byte buffer used when printing out the values
+.section .bss
+	.comm buff, 20
 
 .section .text
 # The .text section is our executable code.
@@ -18,33 +20,35 @@ head:
 # with .globl	
 .globl _start
 _start:
-	# Fill in the addresses array
+	# Fill in the addresses array and the head variable
 	leaq data_items, %rcx
 	movq %rcx, (head)
 	leaq next_address, %rdx
 	call _fill_in_addresses
-
-	_break_point:
 
 	#Sort the linked list
 	leaq next_address, %rcx
 	leaq head, %rdx
 	call _insertion_sort
 
+	_break_point:
+
 	#Load all variable into %rab to check if it is sorted
 	#Start index variable at 0
 	movq (head), %rax
-	movq (%rax), %rbx
-	movq $0, %rdi
+	movq (%rax), %rdi
+	movq $0, %rsi
 	_test_loop:
+		#Print out the value
+		call print_uint64
 		#Move each element into %rax
-		movq (%rcx,%rdi,8), %rax
-		movq (%rax), %rbx
+		movq next_address(,%rsi,8), %rax
+		movq (%rax), %rdi
 		#Exit loop if last element is -1
-		cmpq $-1, %rbx
+		cmpq $-1, %rdi
 		je _end_test_loop
 		#Increment the index variable
-		incq %rdi
+		incq %rsi
 		jmp _test_loop
 	_end_test_loop:
 
@@ -356,6 +360,63 @@ _insertion_sort:
 
 	# return 
 	ret
+
+.p2align 4
+.globl print_integer            #void print_uint64(uint64_t value)
+print_uint64:
+	
+	#Save the value of the registers we use
+	pushq %rax
+	pushq %rbx
+	pushq %rcx
+	pushq %rdx
+	pushq %rsi
+	pushq %rdi
+
+	movq $0, %rsi  #Set %rsi to zero
+
+    mov    $10, %ecx            # move 10 in rcx to use in division (ecx becuase division is weird)
+    # note that newline (\n) has ASCII code 10, so we could actually have stored the newline with  movb %cl, (%rsi) to save code size.
+
+    mov    %rdi, %rax           # function arg arrives in RDI; we need it in RAX for div
+	.Ltoascii_digit:                # do{
+		xor    %edx, %edx			#Clear edx
+		div    %rcx                  #  rax = rdx:rax / 10.  rdx = remainder
+
+									 # store digits in MSD-first printing order, working backwards from the end of the string
+		add    $'0', %rdx            # integer to ASCII.  %dl would work, too, since we know this is 0-9
+		mov    %rdx, buff(,%rsi,1)   # *--p = (value%10) + '0';
+		incq %rsi
+
+		test   %rax, %rax
+    jnz  .Ltoascii_digit        # } while(value != 0)
+    # If we used a loop-counter to print a fixed number of digits, we would get leading zeros
+    # The do{}while() loop structure means the loop runs at least once, so we get "0\n" for input=0
+
+	#Add in the newline character
+	movb    $'\n', buff(,%rsi,1)
+	incq %rsi
+
+    # Then print the whole string with one system call
+    mov   $1, %rax     #write system call
+    mov   $1, %rdi     #use standard output
+    mov   %rsi, %rdx          # length is stored in %rsi 
+	mov $buff, %rsi		#Message is located at buff
+    syscall                     # Output the number
+    
+	#Restore the value of all of the registers we use
+	popq %rdi
+	popq %rsi
+	popq %rdx
+	popq %rcx
+	popq %rbx
+	popq %rax
+
+    # we don't need to restore any registers, and we didn't modify RSP.
+    ret
+
+
+
 
 _exit_x86_64bit:
 	# This is slightly different because in x86_64 (64bit) we get the

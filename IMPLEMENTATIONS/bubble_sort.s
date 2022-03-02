@@ -2,16 +2,17 @@
 # This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
-	.quad 50,51,4,3,2,1,-1
-#Initialize the addresses to zero
-next_address:
-	.quad 0,0,0,0,0,0,0,0,0,0
-head:
-	.quad 0
+	.quad 6,5,4,3,2,1,-1
 
-#Reserve a 20 byte buffer used when printing out the values
+#Reserve values that will later be filled in
 .section .bss
+	#Buffer used for printing values
 	.comm buff, 20
+	#next_address array, 800 bytes allows for up to 100 quad addresses
+	.comm next_address, 800
+	#head is the head of the array, holds 1 quad address
+	.comm head, 8
+
 
 .section .text
 # The .text section is our executable code.
@@ -33,24 +34,24 @@ _start:
 
 	_break_point:
 
-	#Load all variable into %rab to check if it is sorted
+	#Print out the sorted list
 	#Start index variable at 0
 	movq (head), %rax
 	movq (%rax), %rdi
 	movq $0, %rsi
-	_test_loop:
+	_print_loop:
 		#Print out the value
-		call print_uint64
-		#Move each element into %rax
+		call print_value
+		#Move next element into %rdi
 		movq next_address(,%rsi,8), %rax
 		movq (%rax), %rdi
 		#Exit loop if last element is -1
 		cmpq $-1, %rdi
-		je _end_test_loop
+		je _end_print_loop
 		#Increment the index variable
 		incq %rsi
-		jmp _test_loop
-	_end_test_loop:
+		jmp _print_loop
+	_end_print_loop:
 
 	jmp _exit_x86_64bit
 
@@ -363,8 +364,11 @@ _insertion_sort:
 
 .p2align 4
 .globl print_integer            #void print_uint64(uint64_t value)
-print_uint64:
-	
+print_value:
+	#Standard function initialization
+	pushq	%rbp
+	movq	%rsp, %rbp
+
 	#Save the value of the registers we use
 	pushq %rax
 	pushq %rbx
@@ -376,7 +380,6 @@ print_uint64:
 	movq $0, %rsi  #Set %rsi to zero
 
     mov    $10, %ecx            # move 10 in rcx to use in division (ecx becuase division is weird)
-    # note that newline (\n) has ASCII code 10, so we could actually have stored the newline with  movb %cl, (%rsi) to save code size.
 
     mov    %rdi, %rax           # function arg arrives in RDI; we need it in RAX for div
 	.Ltoascii_digit:                # do{
@@ -393,16 +396,16 @@ print_uint64:
     # If we used a loop-counter to print a fixed number of digits, we would get leading zeros
     # The do{}while() loop structure means the loop runs at least once, so we get "0\n" for input=0
 
-	#Add in the newline character
+	#Add in the newline character at the end of the buffer
 	movb    $'\n', buff(,%rsi,1)
 	incq %rsi
 
     # Then print the whole string with one system call
     mov   $1, %rax     #write system call
     mov   $1, %rdi     #use standard output
-    mov   %rsi, %rdx          # length is stored in %rsi 
-	mov $buff, %rsi		#Message is located at buff
-    syscall                     # Output the number
+    mov   %rsi, %rdx   # length is stored in %rsi 
+	mov $buff, %rsi	   #Message is located at buff
+    syscall            # Output the number using a system call
     
 	#Restore the value of all of the registers we use
 	popq %rdi
@@ -412,7 +415,9 @@ print_uint64:
 	popq %rbx
 	popq %rax
 
-    # we don't need to restore any registers, and we didn't modify RSP.
+	#Restore stack and return
+	movq %rbp, %rsp
+	popq %rbp
     ret
 
 

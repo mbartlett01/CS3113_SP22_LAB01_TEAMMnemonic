@@ -52,6 +52,7 @@ All three members will work on the README together to establish a timeline and p
       - Updated Date: March 3rd 
 ### Chart Format 
 [![Shedule.png](https://i.postimg.cc/DwhP7pMz/Picture.png)](https://postimg.cc/56PC3g1c)
+- Time is defined in portional units ranging from 1-10, not hours
 ## Meeting Notes
 -  February 18th: Set initial timeline and meeting dates. We planned on working individually and then reporting back on the following Monday 
 -  February 19th: Set up an outline for the report and started filling out the assumptions section. We pooled together knowledge of the work done on the weekend.

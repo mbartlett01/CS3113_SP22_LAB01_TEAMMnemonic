@@ -20,17 +20,28 @@
 - Sub Problem: Implement Insertions Sort on List
    -  Used various registers as well as the stack to hold list items allowing for sorting (similar methods to the bubble sort function)
  - Sub Problem: Print Output  
+ - Used buffer to create a section the could be outputed sto the terminal
 
 ### Work Plan
 
 ## Statment of Work 
-
-### Written Component
-All three members will work on the README together to establish a timeline and provide individual reflections
-
-### Presentation
-
-### Implementation
+To advance the teamwork and communication of the Mnemonic's team, we have created this
+teamwork agreement to define how we will work together.
+Each member of the team is responsible and accountable to uphold our teamwork agreement as we
+work together to improve our teamwork and communication as well as the outcome of our
+patients/clients.
+The teamwork agreement we commit to:
+- Be respectful of our team members
+- Direct communication, rather than side bar conversations
+- A commitment to complete tasks for which we are responsible
+- Kindness and compassion towards each other
+- Holding each other accountable when someone is not acting in accordance with this agreement
+Where differences arise, our team is committed to resolving conflict by:
+- Addressing differences in a timely, open and honest manner,
+- Speaking to the people directly involved in the conflict first, before approaching a third party
+mediator, such as a manager or director, and
+- Avoiding using blaming language. Use “I” language instead of “you” when talking about the
+issue.
 
 ## Schedule/Timeline 
 ### 

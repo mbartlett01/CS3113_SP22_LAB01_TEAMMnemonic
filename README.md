@@ -51,7 +51,7 @@ All three members will work on the README together to establish a timeline and p
    - New Date: February 27th/28th  
       - Updated Date: March 3rd 
 ### Chart Format 
- ![Employee data](/repository/assets/employee.png?raw=true "Employee Data title")
+ ![Shedule Chart](blob:https://discord.com/03cd8754-db43-4217-857d-38108fc23f8c)
 ## Meeting Notes
 -  February 18th: Set initial timeline and meeting dates. We planned on working individually and then reporting back on the following Monday 
 -  February 19th: Set up an outline for the report and started filling out the assumptions section. We pooled together knowledge of the work done on the weekend.

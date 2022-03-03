@@ -14,11 +14,12 @@
    - Changed code so that register would be passed as parameters allowing for the creation of functions 
 - Sub Problem: Creation of Doubly Linked List
    - Created a third quad list/variable 
-      - Dropped 
+   - Dropped 
 - Sub Problem: Allow for Fixed Sized List to be Read In 
    - Dropped 
 - Sub Problem: Implement Insertions Sort on List
-   -  Used various registers as well as the stack to hold list items allowing for sorting (similar methods to the bubble sort function)  
+   -  Used various registers as well as the stack to hold list items allowing for sorting (similar methods to the bubble sort function)
+ - Sub Problem: Print Output  
 
 ### Work Plan
 

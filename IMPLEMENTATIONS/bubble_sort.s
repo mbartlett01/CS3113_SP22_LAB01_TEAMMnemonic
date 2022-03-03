@@ -1,27 +1,18 @@
-# This is a set of examples in a series of using x86 (32bit) and x86_64 (64bit) assembly
-# instructions. Assemble and link these files and trace through the executable with the
-# debugger. The idea is to get a sense of how to use these instructions, so you can rip
-# this and use it in your own code
-#
-# If you have any questions, comments, concerns, or find bugs, then just send me an email.
-# 
-# - richard.m.veras@ou.edu
-
-# Resources to check out:
-# https://www.cs.princeton.edu/courses/archive/spr18/cos217/lectures/15_AssemblyFunctions.pdf
-# https://www.cs.uaf.edu/2015/fall/cs301/lecture/09_14_call.html
-# http://6.s081.scripts.mit.edu/sp18/x86-64-architecture-guide.html
-# https://cs61.seas.harvard.edu/site/2018/Asm2/
-# https://cs.lmu.edu/~ray/notes/gasexamples/
-# https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html#calling	
-# https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
-
-	
 .section .data
-# This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
-data_items
-     .long 13,167,4,200,5,75,10,14,1,60,2,111,66,55,0
+data_items:
+	.quad 20,46,851,746552,5412,641,5775,47,31,2654321,1,-1
+
+#Reserve values that will later be filled in
+.section .bss
+	#Buffer used for printing values
+	.comm buff, 128
+	#next_address array, 800 bytes allows for up to 100 quad addresses
+	.comm next_address, 800
+	#head is the head of the array, holds 1 quad address
+	.comm head, 8
+
+
 .section .text
 # The .text section is our executable code.
 
@@ -29,114 +20,71 @@ data_items
 # with .globl	
 .globl _start
 _start:
+	# Fill in the addresses array and the head variable
+	leaq data_items, %rcx
+	movq %rcx, (head)
+	leaq next_address, %rdx
+	call _fill_in_addresses
 
-	# Caller side of the function
-	# If we are using any of the caller saved registers, then we
-	# need to save them to the stack before making the function call.
-	# After the function call we will restore them.
-	#
-	# the caller saved registers are:
-	# %rax, %rcx, %rdx, %rdi, %rsi, %r8, %r9, %r10, %r11
-	#
-	# In general before and after the function call we will do the following:
-	#
-	#
-	# pushq %rax # Note: Also the return value
-	# pushq %rcx # Note: Also fourth parameter
-	# pushq %rdx # Note: Also third parameter
-	# pushq %rdi # Note: Also first parameter
-	# pushq %rsi # Note: Also second parameter
-	# pushq %r8  # Note: Also fifth parameter
-	# pushq %r9  # Note: Also sixth parameter
-	# pushq %r10
-	# pushq %r11
-	#
-	# ... Move the values for the first six parameters to %rdi, %rsi, %rdx, %rcx, %r8, %r9
-	# ... Everything after that is stored on the stack: (towards_bottom), param8,..., paramN, (stack_top)
-	#
-	# call some_function 
-	#
-	# ... Grab and do something with the return value in %rax
-	#
-	# popq %r11
-	# popq %r10
-	# popq %r9
-	# popq %r8
-	# popq %rsi
-	# popq %rdi
-	# popq %rdx
-	# popq %rcx
-	# popq %rax
-	#
-	# Note: that some of these registers are used in the function call
-	#       so we can get clever in how we use them. For example if we
-	#       are not using a particular register, then we do not need to
-	#       save it's value.
+	#Sort the linked list
+	leaq next_address, %rcx
+	leaq head, %rdx
+	call _insertion_sort
 
+	_break_point:
 
-
-	# Let's call our function. We haven't used any of the caller saved
-	# registers, so we don't need to deal with them.
-
-	# TEST: Examine the stack in gdb before, during and after the function call.
-	#   The following command will show us the first 8 quadwords (64bit) at the
-	#   top of the stack.
-	#
-	#   (gdb) x/8gx $rsp
-	#
-	
-	# We want to multiply 3 by 7
-	movq $3, %rdi
-	movq $7, %rsi
-	call _my_mul_2_params
-
-	# the return value should be in %rax
-	
+	#Print out the sorted list
+	#Start index variable at 0
+	movq (head), %rax
+	movq (%rax), %rdi
+	movq $0, %rsi
+	_print_loop:
+		#Print out the value
+		call print_value
+		#Move next element into %rdi
+		movq next_address(,%rsi,8), %rax
+		movq (%rax), %rdi
+		#Exit loop if last element is -1
+		cmpq $-1, %rdi
+		je _end_print_loop
+		#Increment the index variable
+		incq %rsi
+		jmp _print_loop
+	_end_print_loop:
 
 	jmp _exit_x86_64bit
 
-
-# take two params (a,b) in %rdi and %rsi, multiply
-# them and return the result in rax
-.type _my_mul_2_params, @function
-_my_mul_2_params:
-	# standard function stuff for callee
+#fill in the next address array
+#pass the data array in %rcx and the address array in %rdx
+.type _fill_in_addresses, @function
+_fill_in_addresses:
+	# standard function stuff for call
 	# 1. put the old base pointer register on the stack
 	pushq	%rbp
 	# 2. move the old stack pointer register
 	#    to the base pointer register
 	movq	%rsp, %rbp
 
-	# TEST: Examine the stack in gdb before, during and after the function call.
-	#   The following command will show us the first 8 quadwords (64bit) at the
-	#   top of the stack.
-	#
-	#   (gdb) x/8gx $rsp
-	#
+	#Initialize the index variable
+	movq $1, %rdi
 
-	# callee saved registers: If the callee needs to use these registers
-	#   then it is is the callee's responsibility to first save the value
-	#   of these registers on the stack before using these register, then
-	#   restore the value of these registers before returning. We see this
-	#   every time with %rbp, and sort of %rsp... and indirectly with %rip
-	#
-	# The callee saved registers are:
-	# %rbp, %rbx, %r12, %r13, %r14 and %r15
-	#
-
-
-	# The first six parameters are stored in:
-	# %rdi, %rsi, %rdx, %rcx, %r8, %r9
-	# All parameters after that are pushed on the stack by the
-	# caller function
-
-
-	# Here is the actual work performed by the function.
-	movq %rdi, %rax
-	imulq %rsi, %rax
-
-	# the return value is in %rax
-
+	#Create a loop
+	_start_address_loop:
+		#Load the current value into rax
+		movq (%rcx,%rdi,8), %rax
+		#Load the corresponding address into the addresses array
+		leaq (%rcx,%rdi,8), %rbx
+		decq %rdi
+		movq %rbx, (%rdx,%rdi,8)
+		incq %rdi
+		#Increment the counter
+		incq %rdi
+		#Check to see if the current value is -1 and if so, jump to the end of the loop
+		cmpq $-1, %rax
+		je _end_address_loop
+		#Loop 
+		jmp _start_address_loop
+	_end_address_loop:
 	
 	# callee saved registers: if we used any of the callee saved
 	#   we need to make sure to restore them before returning.
@@ -151,7 +99,299 @@ _my_mul_2_params:
 
 	# return 
 	ret
-	
+
+#Swap Function used in bubble sort that swaps addresses stored in %rax and %rbx
+.type _swap, @function
+_swap:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	#Check to see if we are dealing with the head of the array
+	cmpq $0, %rdi
+	je _head_swap
+
+	#swap the addresses in the addresses array
+	movq %rax, (%rcx,%rdi,8)
+	decq %rdi
+	movq %rbx, (%rcx,%rdi,8)
+	incq %rdi
+	jmp _end_head_swap
+
+	#Swap the value for the one in the head of the array
+	_head_swap:
+	movq %rax, (%rcx,%rdi,8)
+	movq %rbx, (%rdx)
+	_end_head_swap:
+
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+	# return 
+	ret
+
+#Uses bubble sort to sort a linked list
+#Passes the addresses of linked list in %rcx and the head of the linked list in %rdx
+.type _bubble_sort, @function
+_bubble_sort:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	# Start bubble sort
+	#%rax first element
+	#%rbx second element
+	#%rsi flag saying if we have swapped (0 = no swap, 1 = swap)
+	_start_outer_bubble_loop:
+		#Start index variable at 0
+		movq $0, %rdi
+		movq $0, %rsi
+		#load the head of the list into %rax to start
+		movq (%rdx), %rax
+		_start_inner_bubble_loop:
+			#Load the address of the next value into %rbx
+			movq (%rcx,%rdi,8), %rbx
+			#Exit loop if last element is -1
+			cmpq $-1, (%rbx)
+			je _end_inner_bubble_loop
+			#Compare the values and swap if necessary
+			#Push the addresses to reduce register use
+			pushq %rax
+			pushq %rbx
+			pushq (%rax)
+			pushq (%rbx)
+			#Get the actual values at the addresses
+			popq %rbx
+			popq %rax
+			#Compare the value of the two elements
+			cmpq %rbx, %rax
+			#Return the addresses to the registers
+			popq %rbx
+			popq %rax
+			#Decide to swap or not
+			jle _no_swap
+			call _swap
+			#Set the swap flag to true
+			movq $1, %rsi
+			_no_swap:
+			#Load the new values into %rax
+			movq (%rcx,%rdi,8), %rax
+			incq %rdi
+			jmp _start_inner_bubble_loop
+		_end_inner_bubble_loop:
+		#Check to see if no swaps occurred
+		cmpq $0, %rsi
+		je _end_outer_bubble_loop
+		jmp _start_outer_bubble_loop
+	_end_outer_bubble_loop:
+
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+	# return 
+	ret
+
+#Uses Insertion sort to sort a linked list
+#Passes the addresses of linked list in %rcx
+#Uses %rax, %rbx, %rdi, %rsi
+.type _insertion_sort, @function
+_insertion_sort:
+	# standard function stuff for call
+	# 1. put the old base pointer register on the stack
+	pushq	%rbp
+	# 2. move the old stack pointer register
+	#    to the base pointer register
+	movq	%rsp, %rbp
+
+	#%rdi outer loop index
+	#%rsi inner loop index
+	#Start insertion sort
+	#Initialize the index variables
+	movq $0, %rdi
+	_start_outer_insertion_loop:
+		#Load the value we are currently moving into %rax
+		movq (%rcx,%rdi,8), %rax
+		#Break out of the loop if the value is -1
+		cmpq $-1, (%rax)
+		je _end_outer_insertion_loop
+		#Reset the inner loop index
+		movq %rdi, %rsi
+		decq %rsi
+		#Start inner loop
+		_start_inner_insertion_loop:
+			#Check to see if we need to break out of the loop
+			cmpq $-1, %rsi
+			je _end_inner_insertion_loop
+			#Load the next value to compare into %rbx
+			movq (%rcx,%rsi,8), %rbx
+			#Compare the values and shift if necessary
+			#Push the addresses to reduce register use
+			pushq %rax
+			pushq %rbx
+			pushq (%rax)
+			pushq (%rbx)
+			#Get the actual values at the addresses
+			popq %rbx
+			popq %rax
+			#Compare the value of the two elements
+			cmpq %rbx, %rax
+			#Return the addresses to the registers
+			popq %rbx
+			popq %rax
+			#Determine if we need to shift or insert
+			jge _insert
+			#Shift the value by 1 if you are not inserting it
+			#shift the value in %rbx to the right by one
+			incq %rsi
+			movq %rbx, (%rcx,%rsi,8)
+			decq %rsi
+			#Jump back to start of the inner loop
+			decq %rsi
+			jmp _start_inner_insertion_loop
+		_end_inner_insertion_loop:
+		#Do one more iteration with the head
+		#Move the value of the head into %rbx
+		movq (%rdx), %rbx
+		#Compare the values and shift if necessary
+		#Push the addresses to reduce register use
+		pushq %rax
+		pushq %rbx
+		pushq (%rax)
+		pushq (%rbx)
+		#Get the actual values at the addresses
+		popq %rbx
+		popq %rax
+		#Compare the value of the two elements
+		cmpq %rbx, %rax
+		#Return the addresses to the registers
+		popq %rbx
+		popq %rax
+		#Determine if we need to shift or insert
+		jge _insert
+		#Shift the value by 1 if you are not inserting it
+		#shift the value in %rbx to the right by one
+		incq %rsi
+		movq %rbx, (%rcx,%rsi,8)
+		decq %rsi
+		decq %rsi
+		_insert:
+		#Check to see if we are inserting into the head
+		cmpq $-2, %rsi
+		je _head_insert
+		#Increase %rsi by 1 then insert the value of %rax into the list
+		incq %rsi
+		movq %rax, (%rcx,%rsi,8)
+		jmp _end_head_insert
+		#Insert into the head node if needed
+		_head_insert:
+		movq %rax, (%rdx)
+		_end_head_insert:
+		#Jump back to the start of the outer loop
+		incq %rdi
+		jmp _start_outer_insertion_loop
+	_end_outer_insertion_loop:
+
+	# Standard function callee stuff
+	# 1. set the stack pointer to the base pointer value.
+	#    This is where the caller believe the top of the
+	#    stack is located.
+	movq %rbp, %rsp
+	# 2. restore the base pointer
+	popq %rbp
+
+	# return 
+	ret
+
+.p2align 4
+.globl print_value
+print_value:
+	#Standard function initialization
+	pushq	%rbp
+	movq	%rsp, %rbp
+
+	#Save the value of the registers we use
+	pushq %rax
+	pushq %rbx
+	pushq %rcx
+	pushq %rdx
+	pushq %rsi
+	pushq %rdi
+
+	movq $0, %rsi  #Set %rsi to zero
+
+    mov    $10, %ecx            # move 10 in rcx to use in division (ecx becuase division is weird)
+
+    mov    %rdi, %rax           # function arg arrives in RDI; we need it in RAX for div
+	.Ltoascii_digit:                # do{
+		xor    %edx, %edx			#Clear edx
+		div    %rcx                  #  rax = rdx:rax / 10.  rdx = remainder
+
+		add    $'0', %rdx           # integer to ASCII.
+		incq   %rsi					#Add 1 to the number of digits written
+
+		#Shift the previous values in the buffer down by 1
+		mov %rsi, %rdi
+		_shift_loop:
+			decq %rdi
+			movq buff(,%rdi, 8), %rbx
+			incq %rdi
+			movq %rbx, buff(,%rdi, 8)
+			decq %rdi
+			#Check to see if we need to break out of the loop
+			cmp $0, %rdi
+			je _end_shift_loop
+			jmp _shift_loop
+		_end_shift_loop:
+
+		#Put the new value in the buffer
+		movq %rdx, buff
+
+		test   %rax, %rax
+    jnz  .Ltoascii_digit        # } while(value != 0)
+
+	#Add in the newline character at the end of the buffer
+	movq    $'\n', buff(,%rsi,8)
+	incq %rsi
+
+    # Then print the whole string with one system call
+    mov $1, %rax     #write system call
+    mov $1, %rdi     #use standard output
+    imul $8, %rsi, %rdx   # length is stored in %rsi 
+	mov $buff, %rsi	   #Message is located at buff
+    syscall            # Output the number using a system call
+    
+	#Restore the value of all of the registers we use
+	popq %rdi
+	popq %rsi
+	popq %rdx
+	popq %rcx
+	popq %rbx
+	popq %rax
+
+	#Restore stack and return
+	movq %rbp, %rsp
+	popq %rbp
+    ret
+
+
+
+
 _exit_x86_64bit:
 	# This is slightly different because in x86_64 (64bit) we get the
 	# syscall instruction, which provides more flexibility than int (interrupt)

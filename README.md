@@ -42,10 +42,10 @@ All three members will work on the README together to establish a timeline and p
       - New Date: March 1st 
 -  Finish Report: February 25th
    - New Date: February 26th/27th 
-      - Updated Date: March 1st 
+      - Updated Date: March 2nd 
 -  Record Presentation: February 28th/March 1st 
    - New Date: February 27th/28th  
-      - Updated Date: March 1st/March 2nd 
+      - Updated Date: March 3rd 
 ### Chart Format 
  
 ## Meeting Notes

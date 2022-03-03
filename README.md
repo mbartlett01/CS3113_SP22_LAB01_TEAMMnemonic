@@ -42,6 +42,7 @@ Where differences arise, our team is committed to resolving conflict by:
 mediator, such as a manager or director, and
 - Avoiding using blaming language. Use “I” language instead of “you” when talking about the
 issue.
+Each team member will contribute as much as possible to each section of the project. Meetings will be going over the work each indvidual did merging all of the work done as well as setting goals for the next meeting. 
 
 ## Schedule/Timeline 
 ### 

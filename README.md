@@ -65,10 +65,11 @@ All three members will work on the README together to establish a timeline and p
  
  ### Averi's Assessment
  
- ### Michael's Assessment
+ ### Michael's Assessment: Overall, I feel as if all members contributed their fair share to the project. I contributed to the team by writing the code implementing the linked list as dual arrays as well as working on both sorting algorithms and printing the values of the array to the terminal. I also worked some on the README and helped to edit the report and the presentation. Tina contributed to the project by helping with scripting GDB commands, working on file input and output, and by working on the presentation and report. Averi contributed to the project by writing a large portion of the report, working on the presentation, helping with planning the sorting algorithms, and writing most of the README file. Since we all worked on many different areas and everyone did their agreed upon work, I would personlly distribute the points equally between group members (33.3% each).
  
  ### Tina's Assessment
  
  ## Reflections
+ 
  
    

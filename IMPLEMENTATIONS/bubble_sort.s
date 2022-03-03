@@ -1,5 +1,4 @@
 .section .data
-# This example does not make use of the data section
 # Creation of a temp list to run bubble sort on -> no nodes created 
 data_items:
 	.quad 20,46,851,746552,5412,641,5775,47,31,2654321,1,-1

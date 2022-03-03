@@ -7,15 +7,18 @@
    - Created a quad list/variable holding various numbers
 -  Sub Problem: Pointing to Next Node
    -  Using a back-to-back method to address this issue
-   -   Changed to parallel list format to address the issue instead, which is done using a quad list/variable
+   -   Changed to parallel list format to address the issue instead, which is done using a quad list/variable as well as buffer 
 - Sub Problem: Implement Bubble Sort on List
    - Used various registers as well as the stack to hold list items allowing for sorting 
 - Sub Problem: Creation of Functions for Compartmentalization
    - Changed code so that register would be passed as parameters allowing for the creation of functions 
 - Sub Problem: Creation of Doubly Linked List
    - Created a third quad list/variable 
+      - Dropped 
 - Sub Problem: Allow for Fixed Sized List to be Read In 
+   - Dropped 
 - Sub Problem: Implement Insertions Sort on List
+   -  Used various registers as well as the stack to hold list items allowing for sorting (similar methods to the bubble sort function)  
 
 ### Work Plan
 

@@ -45,12 +45,13 @@ issue.
 
 ## Schedule/Timeline 
 ### 
--  Initial Progress Meeting: February 18st
+-  Initial Progress Meeting: February 18th
 -  Second Progress Meeting: February 19th
 -  Third Progress Meeting: February 24th 
 -  Fourth Progress Meeting: February 25th 
 -  Sixth Progress Meeting: February 26th 
 -  Seventh Progress Meeting: February 27th 
+-  Final Progress Meeting: March 3rd
 -  Finish Programming section: February 25th 
    - New Date: February 27th      
 -  Finish Programing section with add-ons: February 26th/27th

@@ -29,7 +29,7 @@ _start:
 	#Sort the linked list
 	leaq next_address, %rcx
 	leaq head, %rdx
-	call _insertion_sort
+	call _bubble_sort
 
 	_break_point:
 

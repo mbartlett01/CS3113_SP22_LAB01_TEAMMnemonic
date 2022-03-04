@@ -1,0 +1,52 @@
+"/home/nguy0452/CS3113_SP22_LAB01_TEAMMnemonic/IMPLEMENTATIONS/bubble_sort.s": not in executable format: File format not recognized
+Reading symbols from bubble_sort.x...done.
+25	in /home/nguy0452/CS3113_SP22_LAB01_TEAMMnemonic/IMPLEMENTATIONS/bubble_sort.s
+Breakpoint 1 at 0x4000e2: file bubble_sort.s, line 38.
+Type commands for breakpoint(s) 1, one per line.
+End with a line saying just "end".
+Breakpoint 2 at 0x400114: file bubble_sort.s, line 63.
+Type commands for breakpoint(s) 2, one per line.
+End with a line saying just "end".
+Breakpoint 3 at 0x400167: file bubble_sort.s, line 147.
+Type commands for breakpoint(s) 3, one per line.
+End with a line saying just "end".
+0x6002db:	20	0	46	0
+0x6002eb:	851	0	746552	0
+0x6002fb:	5412	0	641	0
+0x60030b:	5775	0
+Starting program: /home/nguy0452/CS3113_SP22_LAB01_TEAMMnemonic/IMPLEMENTATIONS/bubble_sort.x 
+
+Breakpoint 2, _fill_in_addresses () at bubble_sort.s:63
+$1 = 0
+$2 = 0
+
+Breakpoint 1, _break_point () at bubble_sort.s:38
+$3 = 6292275
+$4 = 6293216
+[Inferior 1 (process 18952) exited normally]
+Reading symbols from bubble_sort.x...done.
+23	in /home/nguy0452/CS3113_SP22_LAB01_TEAMMnemonic/IMPLEMENTATIONS/bubble_sort.s
+Breakpoint 1 at 0x4000b0: file bubble_sort.s, line 24.
+Type commands for breakpoint(s) 1, one per line.
+End with a line saying just "end".
+Breakpoint 2 at 0x400167: file bubble_sort.s, line 147.
+Type commands for breakpoint(s) 2, one per line.
+End with a line saying just "end".
+Breakpoint 3 at 0x4001b7: file bubble_sort.s, line 217.
+Type commands for breakpoint(s) 3, one per line.
+End with a line saying just "end".
+0x6002db:	20	0	46	0
+0x6002eb:	851	0	746552	0
+0x6002fb:	5412	0	641	0
+0x60030b:	5775	0
+Starting program: /home/nguy0452/CS3113_SP22_LAB01_TEAMMnemonic/IMPLEMENTATIONS/bubble_sort.x 
+
+Breakpoint 1, _start () at bubble_sort.s:24
+$1 = 0
+$2 = 0
+
+Breakpoint 3, _insertion_sort () at bubble_sort.s:217
+$3 = 0
+$4 = 6292275
+$5 = -1
+[Inferior 1 (process 18970) exited normally]

@@ -22,7 +22,7 @@
  - Sub Problem: Print Output  
  - Used buffer to create a section the could be outputed sto the terminal
  - Sub Problem: GDB Scripting
- - Set up correct files in order to script
+   - Set up correct files in order to script
 ## Statment of Work 
 To advance the teamwork and communication of the Mnemonic's team, we have created this
 teamwork agreement to define how we will work together.

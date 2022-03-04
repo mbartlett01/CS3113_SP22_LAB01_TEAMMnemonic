@@ -14,13 +14,13 @@
    - Changed code so that register would be passed as parameters allowing for the creation of functions 
 - Sub Problem: Creation of Doubly Linked List
    - Created a third quad list/variable 
-   - Dropped -> kept breaking other sections of our code (spefically the during sorting and address filling) 
+   - Dropped -> kept breaking other sections of our code (specifically the during sorting and address filling) 
 - Sub Problem: Allow for Fixed Sized List to be Read In 
-   - Dropped -> minimal returns on despite the large time investment
+   - Dropped -> minimal returns on despite the significant time investment
 - Sub Problem: Implement Insertions Sort on List
    -  Used various registers as well as the stack to hold list items allowing for sorting (similar methods to the bubble sort function)
  - Sub Problem: Print Output  
- - Used buffer to create a section the could be outputed sto the terminal
+ - Used buffer to create a section that could be outputted to the terminal
  - Sub Problem: GDB Scripting
    - Set up correct files in order to script
 ## Statment of Work 
@@ -31,17 +31,17 @@ work together to improve our teamwork and communication as well as the outcome o
 patients/clients.
 The teamwork agreement we commit to:
 - Be respectful of our team members
-- Direct communication, rather than side bar conversations
+- Direct communication, rather than sidebar conversations
 - A commitment to complete tasks for which we are responsible
 - Kindness and compassion towards each other
 - Holding each other accountable when someone is not acting in accordance with this agreement
 Where differences arise, our team is committed to resolving conflict by:
-- Addressing differences in a timely, open and honest manner,
-- Speaking to the people directly involved in the conflict first, before approaching a third party
+- Addressing differences in a timely, open, and honest manner,
+- Speaking to the people directly involved in the conflict first before approaching a third-party
 mediator, such as a manager or director, and
-- Avoiding using blaming language. Use “I” language instead of “you” when talking about the
+- Avoiding using blaming language. Use "I" language instead of "you" when talking about the
 issue.
-#### Each team member will contribute as much as possible to each section of the project. Meetings will be going over the work each indvidual did merging all of the work done as well as setting goals for the next meeting. 
+#### Each team member will contribute as much as possible to each section of the project. Meetings will be going over the work each individual did, merging all of the work done as well as setting goals for the next meeting. 
 
 ## Schedule/Timeline 
 ### 
@@ -71,14 +71,14 @@ issue.
 -  February 24th: Finished basic bubble sort program. Set up next meeting for addition specification for additional points. We moved the dates back for the presentation and report.
 -  February 25th: Finished the implementation of the function compartmentalization specification.  
 -  February 26th: Ran into some troubles with the bubble sort program and the implementation of insertion sort when introducing. We found a massive flaw in the design that previously went unnoticed. We started attempting to read and write input files. 
--  February 27th: Hit a brick wall and struggle to figure out how to do fix many of of th errors and issues created by the flaw in our previous desgin. Continued having issues getting a file read in to act as input. 
- - March 3rd: Got together twice to work on the presentation, and recorded said presentation. 
+-  February 27th: Hit a brick wall and struggle to figure out how to fix many of the errors and issues created by the flaw in our previous design. Continued having problems getting a file read in to act as input. 
+ - March 3rd: We got together twice to work on the presentation and recorded said presentation. 
  ## Self-Assessment 
  
  ### Averi's Assessment
- Overall, I feel that all members contributed to the project in a reasonablly fair manner; however, I feel that Michael did the most work when it came to the coding portion of the lab. I worked heavily on both the report as well as the README file. I also contributed by finding out ways the would not work in the coding section of the lab espcially towards the begining. I did help both Tina in Michael on the section the contributed heavily to by offering ideas, solutions, as well as support. Overall do the amount of heavy lifting Michael did on the harder sections of the lab I will have to give him a larger amount of points (40% to Michael, 30% for me and Tina each). 
+ Overall, I feel that all members contributed to the project in a reasonably fair manner; however, I think that Michael did the most work when it came to the coding portion of the lab. I worked heavily on both the report as well as the README file. I also contributed by finding out ways that would not work in the coding section of the lab, especially towards the beginning. I did help both Tina in Michael on the area they contributed heavily to by offering ideas, solutions, as well as support. Overall do the amount of heavy lifting Michael did on the more challenging sections of the lab, I will have to give him more points (40% to Michael, 30% for me and Tina each). 
  ### Michael's Assessment: 
- Overall, I feel as if all members contributed their fair share to the project. I contributed to the team by writing the code implementing the linked list as dual arrays as well as working on both sorting algorithms and printing the values of the array to the terminal. I also worked some on the README and helped to edit the report and the presentation. Tina contributed to the project by helping with scripting GDB commands, working on file input and output, and by working on the presentation and report. Averi contributed to the project by writing a large portion of the report, working on the presentation, helping with planning the sorting algorithms, and writing most of the README file. Since we all worked on many different areas and everyone did their agreed upon work, I would personlly distribute the points equally between group members (33.3% each).
+ Overall, I feel as if all members contributed their fair share to the project. I contributed to the team by writing the code implementing the linked list as dual arrays, as well as working on both sorting algorithms and printing the values of the array to the terminal. I also worked some on the README and helped to edit the report and the presentation. Tina contributed to the project by helping with scripting GDB commands, working on file input and output, and by working on the presentation and report. Averi contributed to the project by writing a large portion of the report, working on the presentation, helping with planning the sorting algorithms, and writing most of the README file. Since we all worked on many different areas and everyone did their agreed-upon work, I would personally distribute the points equally between group members (33.3% each).
  
  ### Tina's Assessment
  

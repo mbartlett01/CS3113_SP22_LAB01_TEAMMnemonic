@@ -83,6 +83,11 @@ issue.
  ### Tina's Assessment
  Overall, I feel like all of the members contributed to the project very well, though I believe Michael did a substantial amount when it comes to the work. I contributed by scripting GBD commands, attempting file input and output, writing the presentation, and helping with the report. Averi worked heavily on the report and the README and contributed greatly to the coding process by coming up with ideas and keeping the team on schedule and in check. Michael was the tanker and did a bulk of the coding while still finding time to help with my presentation and Averi's report. He also wrote a huge chunk of the README. I believe with the amount of effort everyone put in, Michael deserves 40%, and Averi and I split the remaining for 30% each.
  
+ ### Average Assesment 
+ - Averi: 31%
+ - Tina: 31%
+ - Michael: 38%
+
  ## Reflections
  Individually, we could have done several things differently in this lab. One valuable lesson we learned in this lab is to not be afraid to give up or ask for help in a lab. If one person is working on something for a long time, they should ask for help from the group members, and if they still cannot resolve the problem and it is not essential, then the group can move on to other goals. We did this for several tasks, however, many tasks likely took up more of an individual's time than necessary if they had asked for help or given up sooner. As a team, I think one thing we would change if we were to do the lab again would be to document and write the report more as we go, as well as to possibly try a wider range of extensions to the project so that we have more options to figure which ones work and which ones don't work early on. We also think that as an instructor, in the future, you should make the grading more transparent and less competitive. Additionally, we think that peer reviews should be anonymous to prevent conflict or disagreement.
  
